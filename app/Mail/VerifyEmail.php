@@ -16,12 +16,12 @@ class VerifyEmail extends Mailable
     /**
      * Create a new message instance.
      */
-            public $token;
+            public $code;
 
-    public function __construct($token)
+    public function __construct($code)
     {
         //
-                 $this->token = $token;
+                 $this->code = $code;
 
     }
 
@@ -37,7 +37,10 @@ class VerifyEmail extends Mailable
       public function build()
     {
                return $this->subject('Verify Your Email')
-                    ->view('emails.verify');
+                    ->view('emails.verify')
+                      ->with([
+                    'verification_code' => $this->code,
+                ]);
 
     }
 

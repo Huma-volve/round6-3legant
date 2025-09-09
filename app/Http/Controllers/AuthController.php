@@ -20,21 +20,21 @@ class AuthController extends Controller
 
         $verificationCode = rand(100000, 999999);
 
-   $user = User::create([
-    'fname' => $request->fname,
-    'lname' => $request->lname,
-    'username' => $request->username,
-    'email' => $request->email,
-    'phone' => $request->phone?? null,
-    'password' => Hash::make($request->password),
-    'role' => 'user', 
-    'is_verified' => false,
-    'verification_code' => Str::uuid(),
-]);
+        $user = User::create([
+            'fname' => $request->fname,
+            'lname' => $request->lname,
+            'username' => $request->username,
+            'email' => $request->email,
+            'phone' => $request->phone ?? null,
+            'password' => Hash::make($request->password),
+            'role' => 'user',
+            'is_verified' => false,
+            'verification_code' => $verificationCode,
+        ]);
         $token = $user->createToken('auth_token')->plainTextToken;
 
 
-        Mail::to($user->email)->send(new VerifyEmail($user->verification_code));
+        Mail::to($user->email)->send(new VerifyEmail($verificationCode));
 
         return response()->json([
             'message' => 'User registered. Verification code sent to email.',
@@ -44,27 +44,57 @@ class AuthController extends Controller
         ], 201);
     }
 
-    public function verifyEmail($code)
-    {
-        $user = User::where('verification_code', $code)->first();
+    // public function verifyEmail($code)
+    // {
+    //     $user = User::where('verification_code', $code)->first();
 
+    //     if (!$user) {
+    //         return response()->json([
+    //             'message' => 'Invalid verification code or user not found.'
+    //         ], 404);
+    //     }
+
+    //     $user->email_verified_at = now();
+    //     $user->verification_code = null;
+    //     $user->is_verified = true;
+    //     $user->save();
+
+    //     return response()->json([
+    //         'message' => 'Email verified successfully!',
+    //         'user' => $user
+    //     ]);
+    // }
+
+
+    public function verifyOTP(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'verification_code' => 'required',
+        ]);
+        // لو يوزر موجود بالايميل 
+        $user = User::where('email', $request->email)->first();
         if (!$user) {
             return response()->json([
-                'message' => 'Invalid verification code or user not found.'
+                'message' => 'User NOT found with this email !!'
             ], 404);
         }
-
-        $user->email_verified_at = now();
-        $user->verification_code = null;
+        //  هتشيك كود 
+        if ($user->verification_code != $request->verification_code) {
+            return response()->json([
+                'message' => 'Invalid verification code.'
+            ], 400);
+        }
         $user->is_verified = true;
+        $user->verification_code = null;
+        $user->email_verified_at = now();
         $user->save();
 
         return response()->json([
-            'message' => 'Email verified successfully!',
+            'message' => 'Email verified successfully.',
             'user' => $user
         ]);
     }
-
     public function login(Request $request)
     {
 
