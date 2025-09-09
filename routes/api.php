@@ -36,6 +36,7 @@ Route::controller(ProductController::class)->prefix('products')->group(function 
     Route::post('store', 'store');         
     Route::put('update/{id}', 'update');      
     Route::delete('destroy/{id}', 'destroy');  
+});
 
 //product routes => Ahmed abdelhalim
 // Route::middleware('auth:sanctum')->group(function () {        
