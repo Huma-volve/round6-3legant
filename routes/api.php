@@ -1,8 +1,8 @@
 <?php
 
 
-use App\Http\Controllers\Category\CategoryController;
-use App\Http\Controllers\Product\ProductController;
+use App\Http\Controllers\Api\V1\Admin\Category\CategoryController;
+use App\Http\Controllers\Api\V1\Admin\Product\ProductController as  AdminProductController;
 use App\Http\Controllers\Api\V1\User\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -30,7 +30,7 @@ Route::controller(CategoryController::class)->prefix('category')->group(function
 
 //----------------- Product --------------- //
 
-Route::controller(ProductController::class)->prefix('products')->group(function () {
+Route::controller(AdminProductController::class)->prefix('products')->group(function () {
     Route::get('index', 'index');          
     Route::get('show/{id}', 'show');       
     Route::post('store', 'store');         
