@@ -8,7 +8,7 @@ use App\Models\Product;
 
 class ProductController extends Controller
 {
- public function index(Request $request)
+    public function index(Request $request)
     {
         $query = Product::with('subcategory');
 
@@ -18,8 +18,12 @@ class ProductController extends Controller
         }
 
         // filter by price range
-        if ($request->has('min_price') && $request->has('max_price')) {
-            $query->whereBetween('price', [$request->min_price, $request->max_price]);
+        if ($request->has('min_price')) {
+            $query->where('price', '>=', $request->min_price);
+        }
+
+        if ($request->has('max_price')) {
+            $query->where('price', '<=', $request->max_price);
         }
 
         // sorting
