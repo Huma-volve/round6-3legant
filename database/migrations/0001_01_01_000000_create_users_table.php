@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('password');
             $table->string('role')->default('customer'); 
             $table->timestamp('email_verified_at')->nullable();
+            $table->string('verification_code')->nullable();
+            $table->boolean('is_verified')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });
