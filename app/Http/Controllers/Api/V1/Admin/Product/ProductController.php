@@ -41,24 +41,4 @@ class ProductController extends Controller
         return response()->json(['message' => 'Product deleted successfully'], 200);
     }
 
-    public function newProducts(){
-        $products = Product::orderBy('created_at', 'desc')->take(10)->get();
-        return response()->json([
-            'status' => true,
-            'message' => 'New products retrieved successfully',
-            'data' => $products
-        ], 200);
-    }
-
-    public function mostViewedProducts(){
-        $products = Product::withAvg('reviews', 'rating')
-                    ->orderByDesc('reviews_avg_rating')
-                    ->take(10)
-                    ->get();
-        return response()->json([
-            'status' => true,
-            'message' => 'Most viewed products retrieved successfully',
-            'data' => $products
-        ], 200);
-    }
 }
