@@ -23,8 +23,9 @@ class CategoryFactory extends Factory
         return [
             'name'        => ucfirst($name),
             'slug'        => Str::slug($name),
-            'parent_id'   => null, 
+            'parent_id'   => null,
             'description' => $this->faker->sentence(),
+            'image'       => $this->faker->imageUrl,
         ];
     }
 }
