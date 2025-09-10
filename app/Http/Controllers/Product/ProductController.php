@@ -50,5 +50,15 @@ class ProductController extends Controller
         ], 200);
     }
 
-
+    public function mostViewedProducts(){
+        $products = Product::withAvg('reviews', 'rating')
+                    ->orderByDesc('reviews_avg_rating')
+                    ->take(10)
+                    ->get();
+        return response()->json([
+            'status' => true,
+            'message' => 'Most viewed products retrieved successfully',
+            'data' => $products
+        ], 200);
+    }
 }
