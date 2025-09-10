@@ -8,8 +8,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\VerifyEmail;
 use App\Http\Requests\RegisterRequest;
-use Illuminate\Support\Str;
-
+use Illuminate\Support\Facades\DB;
+use App\Mail\PasswordResetCode;
+use Illuminate\Auth\Events\PasswordReset;
 
 class AuthController extends Controller
 {
@@ -44,27 +45,7 @@ class AuthController extends Controller
         ], 201);
     }
 
-    // public function verifyEmail($code)
-    // {
-    //     $user = User::where('verification_code', $code)->first();
-
-    //     if (!$user) {
-    //         return response()->json([
-    //             'message' => 'Invalid verification code or user not found.'
-    //         ], 404);
-    //     }
-
-    //     $user->email_verified_at = now();
-    //     $user->verification_code = null;
-    //     $user->is_verified = true;
-    //     $user->save();
-
-    //     return response()->json([
-    //         'message' => 'Email verified successfully!',
-    //         'user' => $user
-    //     ]);
-    // }
-
+   
 
     public function verifyOTP(Request $request)
     {
@@ -117,6 +98,60 @@ class AuthController extends Controller
         ]);
     }
 
+
+
+    // ريكويست بالايميل و تشيك موجود 
+    // exist-->OTP 
+    //ياخد كود ويدخله 
+    // تشيك كود انه صح
+    // fit--> updatepass with new
+    ///
+    public function SendResetCode(Request$request)
+    {
+        $request->validate(['email'=>'required|email']);
+
+        $user=User::where('email',$request->email)->first();
+        if(!$user)
+        {
+            return response()->json(['message'=>'Email Not exist !!'],404);
+        }
+        $code=rand(100000,999999);
+
+        DB::table('password_reset_tokens')->updateOrInsert(
+            ['email' => $request->email],
+            ['token' => $code, 'created_at' => now()]
+        );
+        Mail::to($request->email)->send(new PasswordResetCode($code));
+
+        return response()->json(['message'=>'Reset Code Sent to your Email kindly check']);
+
+    }
+
+    public function updatePassword(Request $request)
+    {
+
+        $request->validate([
+            'email'=>'required|email',
+            'code'=>'required',
+            'new_password'=>'required|min:6'
+        ]);
+           $reset = DB::table('password_reset_tokens')
+            ->where('email', $request->email)
+            ->where('token', $request->code)
+            ->first();
+
+              if (!$reset) {
+            return response()->json(['message' => 'Invalid code'], 400);
+        }
+
+        $user = User::where('email', $request->email)->first();
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        DB::table('password_reset_tokens')->where('email', $request->email)->delete();
+
+        return response()->json(['message' => 'Password reset successfully']);
+    }
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
