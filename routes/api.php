@@ -17,6 +17,8 @@ Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logo
 
 Route::post('/verifyOTP', [AuthController::class, 'verifyOTP']);
 
+Route::post('/password/forgot', [AuthController::class, 'SendResetCode']);
+Route::post('/password/reset', [AuthController::class, 'updatePassword']);
 
 // ------- Category --------------- //
 
