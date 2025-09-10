@@ -10,7 +10,7 @@ use App\Http\Controllers\Home\HomePageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\Api\user\products\ProductController as UserProductController;
+use App\Http\Controllers\Api\V1\User\products\ProductController as UserProductController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
