@@ -1,15 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\user\products;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Illuminate\Support\Facades\Cache;
 
 class ProductController extends Controller
 {
     public function index(Request $request)
     {
+
         $query = Product::with('subcategory');
 
         // filter by subcategory
@@ -45,7 +47,9 @@ class ProductController extends Controller
             $query->latest();
         }
 
+
         $products = $query->paginate(12);
+
 
         return response()->json([
             'status' => true,
