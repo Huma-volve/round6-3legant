@@ -7,7 +7,7 @@ use App\Http\Controllers\Api\V1\User\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\Api\ProductController;
+// use App\Http\Controllers\Api\ProductController;
 
 
 
@@ -31,15 +31,15 @@ Route::controller(CategoryController::class)->prefix('category')->group(function
 //----------------- Product --------------- //
 
 Route::controller(ProductController::class)->prefix('products')->group(function () {
-    Route::get('index', 'index');          
-    Route::get('show/{id}', 'show');       
-    Route::post('store', 'store');         
-    Route::put('update/{id}', 'update');      
-    Route::delete('destroy/{id}', 'destroy');  
+    Route::get('index', 'index');
+    Route::get('show/{id}', 'show');
+    Route::post('store', 'store');
+    Route::put('update/{id}', 'update');
+    Route::delete('destroy/{id}', 'destroy');
 });
 
 //product routes => Ahmed abdelhalim
-// Route::middleware('auth:sanctum')->group(function () {        
+// Route::middleware('auth:sanctum')->group(function () {
 Route::get('/products', [ProductController::class, 'index']);
 
 // });
@@ -52,3 +52,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/user/update', [UserController::class, 'updateProfile']); // Update profile
 
 });
+
+// ---------------- Home  ------------------ //
+
+Route::get('/home/categories', [CategoryController::class, 'homeCategories']);
