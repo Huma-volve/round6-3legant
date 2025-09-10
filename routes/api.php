@@ -33,6 +33,9 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::get('/products', [UserProductController::class, 'index']);
 
 
+Route::post('/password/forgot', [AuthController::class, 'SendResetCode']);
+Route::post('/password/reset', [AuthController::class, 'updatePassword']);
+
 // ------- Category admin --------------- //
 
 Route::controller(CategoryController::class)->prefix('category')->group(function(){
