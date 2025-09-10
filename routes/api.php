@@ -1,5 +1,7 @@
 <?php
 
+
+
 use App\Http\Controllers\Api\V1\User\UserController;
 use App\Http\Controllers\Api\admin\Category\CategoryController;
 use App\Http\Controllers\Api\admin\Product\ProductController;
@@ -18,19 +20,20 @@ Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logo
 
 Route::post('/verifyOTP', [AuthController::class, 'verifyOTP']);
 
-//product routes user => Ahmed abdelhalim
-Route::get('/products', [UserProductController::class, 'index']);
-
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
     // 🔹 User Profile Routes
     Route::get('/user/me', [UserController::class, 'me']);   // Get logged-in user
     Route::post('/user/update', [UserController::class, 'updateProfile']); // Update profile
+
 });
 
+//product routes user => Ahmed abdelhalim
+Route::get('/products', [UserProductController::class, 'index']);
 
-// ------- Category --------------- //
+
+// ------- Category admin --------------- //
 
 Route::controller(CategoryController::class)->prefix('category')->group(function(){
     Route::get('index', 'index');

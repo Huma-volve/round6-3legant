@@ -2,26 +2,33 @@
 
 namespace Database\Factories;
 
-use App\Models\Product;
+
 use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Product>
+ */
 class ProductFactory extends Factory
 {
-    protected $model = Product::class;
-
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
     public function definition(): array
     {
         return [
-            'name' => $this->faker->words(2, true),
-            'description' => $this->faker->sentence(10),
-            'price' => $this->faker->randomFloat(2, 50, 2000),
-            'stock' => $this->faker->numberBetween(0, 100),
-            'add_info' => json_encode([
-                'color' => $this->faker->safeColorName(),
-                'size' => $this->faker->randomElement(['S', 'M', 'L', 'XL'])
-            ]),
-            'subcategory_id' => Category::inRandomOrder()->value('id'), 
+            'name'           => $this->faker->words(3, true), 
+            'description'    => $this->faker->sentence(),
+            'price'          => $this->faker->randomFloat(2, 50, 2000),
+            'stock'          => $this->faker->numberBetween(0, 50),
+            'add_info'       => [
+                'color'    => $this->faker->safeColorName(),
+                'material' => $this->faker->randomElement(['Wood', 'Metal', 'Fabric', 'Leather']),
+                'brand'    => $this->faker->company(),
+            ],
+            'subcategory_id' => Category::inRandomOrder()->first()?->id,
         ];
     }
 }
