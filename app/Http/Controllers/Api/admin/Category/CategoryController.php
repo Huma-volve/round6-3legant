@@ -44,12 +44,4 @@ class CategoryController extends Controller
         return response()->json(['message' => 'Category deleted successfully']);
     }
 
-    public function homeCategories(){
-        $categories = Category::select('id', 'name', 'image')->get();
-        return response()->json([
-            'status' => true,
-            'message' => 'Categories retrieved successfully',
-            'data' => $categories
-        ], 200);
-    }
 }
