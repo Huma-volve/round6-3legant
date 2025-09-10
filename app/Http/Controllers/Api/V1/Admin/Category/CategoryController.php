@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Category;
+namespace App\Http\Controllers\Api\V1\Admin\Category;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Category\CategoryRequest;
@@ -17,7 +17,7 @@ class CategoryController extends Controller
     }
 
     public function show($catID)
-    {
+    {    
         $category = Category::with('children', 'parent')->findOrFail($catID);
         return response()->json($category, 200);
     }
@@ -26,7 +26,7 @@ class CategoryController extends Controller
         $data = $request->validated();
         $category = Category::create($data);
         return response()->json($category);
-
+        
     }
      public function update(CategoryRequest $request, $catID)
     {
@@ -34,22 +34,13 @@ class CategoryController extends Controller
         $category = Category::findOrFail($catID);
         $data = $request->validated();
         $category->update($data);
-        return response()->json($category);
+        return response()->json($category); 
     }
-
+    
      public function destroy($catID)
      {
         $category = Category::findOrFail($catID);
         $category->delete();
         return response()->json(['message' => 'Category deleted successfully']);
     }
-
-    public function homeCategories(){
-        $categories = Category::select('id', 'name', 'image')->get();
-        return response()->json([
-            'status' => true,
-            'message' => 'Categories retrieved successfully',
-            'data' => $categories
-        ], 200);
-    }
-}
+} 
