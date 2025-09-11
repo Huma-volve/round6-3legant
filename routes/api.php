@@ -4,14 +4,13 @@
 use App\Http\Controllers\Api\V1\Admin\Category\CategoryController;
 use App\Http\Controllers\Api\V1\Admin\Product\ProductController as  AdminProductController;
 use App\Http\Controllers\Api\V1\User\UserController;
-use App\Http\Controllers\Api\admin\Product\ProductController;
 use App\Http\Controllers\Api\Adresses\UserLocationController;
 use App\Http\Controllers\Home\HomePageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Api\V1\User\products\ProductController as UserProductController;
-use App\Http\Controllers\Api\V1\Wishlist\WishlistController;
+use App\Http\Controllers\Api\V1\User\Wishlist\WishlistController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -40,11 +39,14 @@ Route::post('/password/forgot', [AuthController::class, 'SendResetCode']);
 Route::post('/password/reset', [AuthController::class, 'updatePassword']);
 
 //product routes user => Ahmed abdelhalim
-Route::get('/products', [UserProductController::class, 'index']);
+Route::controller(UserProductController::class)->prefix('products')->group(function () {
+    Route::get('/', 'index');
+    Route::get('search', 'searchProducts');
+});
 
 // ------- Category admin --------------- //
 
-Route::controller(CategoryController::class)->prefix('category')->group(function(){
+Route::controller(CategoryController::class)->prefix('category')->group(function () {
     Route::get('index', 'index');
     Route::get('show/{catID}', 'show');
     Route::post('store', 'store');
