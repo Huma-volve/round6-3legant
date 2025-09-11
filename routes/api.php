@@ -29,16 +29,20 @@ Route::middleware('auth:sanctum')->group(function () {
 
 });
 
-//product routes user => Ahmed abdelhalim
-Route::get('/products', [UserProductController::class, 'index']);
-
-
 Route::post('/password/forgot', [AuthController::class, 'SendResetCode']);
 Route::post('/password/reset', [AuthController::class, 'updatePassword']);
 
+//product routes user => Ahmed abdelhalim
+Route::controller(UserProductController::class)->prefix('products')->group(function () {
+    Route::get('/', 'index');
+    Route::get('search', 'searchProducts');
+});
+
+
+
 // ------- Category admin --------------- //
 
-Route::controller(CategoryController::class)->prefix('category')->group(function(){
+Route::controller(CategoryController::class)->prefix('category')->group(function () {
     Route::get('index', 'index');
     Route::get('show/{catID}', 'show');
     Route::post('store', 'store');
