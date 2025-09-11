@@ -40,4 +40,17 @@ class HomePageController extends Controller
             'data' => $products
         ], 200);
     }
+
+    public function featuredCollections(){
+        $collections = Category::where('parent_id', null)
+            ->where('is_featured', true)
+            ->with('children:id,name,parent_id,image')
+            ->get(['id', 'name', 'image']);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Featured collections retrieved successfully',
+                'data' => $collections
+            ], 200);
+    }
 }
