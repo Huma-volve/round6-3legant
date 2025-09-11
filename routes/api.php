@@ -4,7 +4,6 @@
 use App\Http\Controllers\Api\V1\Admin\Category\CategoryController;
 use App\Http\Controllers\Api\V1\Admin\Product\ProductController as  AdminProductController;
 use App\Http\Controllers\Api\V1\User\UserController;
-// use App\Http\Controllers\Api\admin\Category\CategoryController;
 use App\Http\Controllers\Api\admin\Product\ProductController;
 use App\Http\Controllers\Home\HomePageController;
 use Illuminate\Http\Request;
@@ -79,4 +78,5 @@ Route::controller(HomePageController::class)->prefix('home')->group(function () 
     Route::get('/categories', 'homeCategories');
     Route::get('/products/new', 'newProducts');
     Route::get('/products/most-viewed', 'mostViewedProducts');
+    Route::get('/collections/featured', 'featuredCollections');
 });
