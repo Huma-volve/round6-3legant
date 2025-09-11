@@ -57,4 +57,22 @@ class ProductController extends Controller
             'data' => $products
         ]);
     }
+    public function searchProducts(Request $request)
+    {
+        $request->validate([
+            'search' => 'required|string|min:3',
+        ]);
+
+        $searchTerm = $request->input('search');
+
+        $products = Product::where('name', 'LIKE', "%{$searchTerm}%")
+            ->orWhere('description', 'LIKE', "%{$searchTerm}%")
+            ->paginate(12);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Search results',
+            'data' => $products
+        ]);
+    }
 }
