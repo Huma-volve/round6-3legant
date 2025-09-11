@@ -1,8 +1,7 @@
 <?php
 
-
 use App\Http\Controllers\Api\V1\Admin\Category\CategoryController;
-use App\Http\Controllers\Api\V1\Admin\Product\ProductController as  AdminProductController;
+use App\Http\Controllers\Api\V1\Admin\Product\ProductController as AdminProductController;
 use App\Http\Controllers\Api\V1\User\UserController;
 use App\Http\Controllers\Home\HomePageController;
 use Illuminate\Http\Request;
@@ -24,7 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
     // 🔹 User Profile Routes
-    Route::get('/user/me', [UserController::class, 'me']);   // Get logged-in user
+    Route::get('user/me', [UserController::class, 'me']);   // Get logged-in user
     Route::post('/user/update', [UserController::class, 'updateProfile']); // Update profile
 
 });
