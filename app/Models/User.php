@@ -82,4 +82,8 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Coupon::class, 'coupon_user');
     }
+
+    public function articles(){
+        return $this->hasMany(Article::class, 'author_id');
+    }
 }
