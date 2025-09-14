@@ -79,4 +79,6 @@ Route::controller(HomePageController::class)->prefix('home')->group(function () 
     Route::get('/products/new', 'newProducts');
     Route::get('/products/most-viewed', 'mostViewedProducts');
     Route::get('/collections/featured', 'featuredCollections');
+    Route::get('/products/best-sellers', 'bestSellerProducts');
 });
+
