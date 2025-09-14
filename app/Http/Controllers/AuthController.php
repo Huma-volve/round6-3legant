@@ -41,6 +41,7 @@ class AuthController extends Controller
             'message' => 'User registered. Verification code sent to email.',
             'user' => $user,
             'token' => $token,
+            'varification_code' => $verificationCode,
 
         ], 201);
     }

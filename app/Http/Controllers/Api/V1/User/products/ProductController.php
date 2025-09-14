@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Api\V1\User\products;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
-use Illuminate\Support\Facades\Cache;
-
+use App\Traits\ApiResponseTrait;
 class ProductController extends Controller
 {
+    use ApiResponseTrait;
+
     public function index(Request $request)
     {
 
@@ -50,11 +51,29 @@ class ProductController extends Controller
 
         $products = $query->paginate(12);
 
+        if ($products->isEmpty()) {
+            return $this->errorResponse('No products found.', 404);
+        }
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Products loaded successfully',
-            'data' => $products
+
+        return $this->successResponse($products, 'Product list');
+    }
+    public function searchProducts(Request $request)
+    {
+        $request->validate([
+            'search' => 'required|string|min:3',
         ]);
+
+        $searchTerm = $request->input('search');
+
+        $products = Product::where('name', 'LIKE', "%{$searchTerm}%")
+            ->orWhere('description', 'LIKE', "%{$searchTerm}%")
+            ->paginate(12);
+            
+        if ($products->isEmpty()) {
+            return $this->errorResponse('No products found matching your search criteria.');
+        }
+
+        return $this->successResponse($products, 'Search results');
     }
 }
