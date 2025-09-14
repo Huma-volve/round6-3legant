@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Database\Seeders\ReviewSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -32,6 +33,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             ArticleSeeder::class,
             OrderSeeder::class,
+            ReviewSeeder::class,
         ]);
 
         User::factory()->create([
