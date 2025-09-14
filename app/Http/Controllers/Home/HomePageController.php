@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Home;
 
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\OrderItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 class HomePageController extends Controller
@@ -51,6 +53,31 @@ class HomePageController extends Controller
                 'status' => true,
                 'message' => 'Featured collections retrieved successfully',
                 'data' => $collections
+            ], 200);
+    }
+
+    public function bestSellerProducts(){
+        $products = Product::joinSub(function ($query) {
+                $query->from('order_items')
+                    ->join('orders', 'order_items.order_id', '=', 'orders.id')
+                    ->where('orders.status', 'completed')
+                    ->select(
+                        'order_items.product_id',
+                        DB::raw('SUM(order_items.quantity) as total_sold'),
+                        DB::raw('COUNT(DISTINCT order_items.order_id) as total_orders')
+                    )
+                    ->groupBy('order_items.product_id');
+            }, 'sales', function ($join) {
+                $join->on('products.id', '=', 'sales.product_id');
+            })
+            ->select('products.*', 'sales.total_sold', 'sales.total_orders')
+            ->orderByDesc('sales.total_sold')
+            ->paginate(10);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Best seller products retrieved successfully',
+                'data' => $products
             ], 200);
     }
 }
