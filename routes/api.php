@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\V1\Admin\Category\CategoryController;
 use App\Http\Controllers\Api\V1\Admin\Product\ProductController as AdminProductController;
 use App\Http\Controllers\Api\V1\User\UserController;
+use App\Http\Controllers\Api\V1\Admin\User\UserController as AdminUserController;
 use App\Http\Controllers\Home\HomePageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -56,6 +57,14 @@ Route::controller(AdminProductController::class)->prefix('products')->group(func
     Route::delete('destroy/{id}', 'destroy');
 });
 
+//----------------- User admin --------------- //
+Route::prefix('admin/users')->controller(AdminUserController::class)->group(function () {
+    Route::get('/', 'index');
+    Route::get('/{id}', 'show');
+    Route::post('/', 'store');
+    Route::put('/{id}', 'update');
+    Route::delete('/{id}', 'destroy');
+});
 
 // ---------------- Home  ------------------ //
 
