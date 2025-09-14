@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\V1\Admin\Category\CategoryController;
 use App\Http\Controllers\Api\V1\Admin\Product\ProductController as  AdminProductController;
 use App\Http\Controllers\Api\V1\User\UserController;
 use App\Http\Controllers\Api\admin\Product\ProductController;
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\Home\HomePageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -82,3 +83,8 @@ Route::controller(HomePageController::class)->prefix('home')->group(function () 
     Route::get('/products/best-sellers', 'bestSellerProducts');
 });
 
+// ---------------- Blog  ------------------ //
+Route::controller(ArticleController::class)->prefix('articles')->group(function () {
+    Route::get('index', 'index');
+    Route::get('show/{slug}', 'show');
+});
