@@ -11,6 +11,7 @@ use App\Http\Requests\RegisterRequest;
 use Illuminate\Support\Facades\DB;
 use App\Mail\PasswordResetCode;
 use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -30,12 +31,19 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'role' => 'user',
             'is_verified' => false,
-            'verification_code' => $verificationCode,
+            // 'verification_code' => $verificationCode,
+            'name' => $request['name'],
+            // 'email' => $request['email'],
+            // 'password' => Hash::make($request->password),
+            // 'is_verified' => false,
+            'verification_code' => Str::uuid(),
+
         ]);
         $token = $user->createToken('auth_token')->plainTextToken;
 
 
-        Mail::to($user->email)->send(new VerifyEmail($verificationCode));
+        // Mail::to($user->email)->send(new VerifyEmail($verificationCode));
+        Mail::to($user->email)->send(new VerifyEmail($user->verification_code));
 
         return response()->json([
             'message' => 'User registered. Verification code sent to email.',
@@ -73,7 +81,6 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'Email verified successfully.',
-            'user' => $user
         ]);
     }
     public function login(Request $request)
