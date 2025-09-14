@@ -1,9 +1,9 @@
 <?php
 
-
 use App\Http\Controllers\Api\V1\Admin\Category\CategoryController;
-use App\Http\Controllers\Api\V1\Admin\Product\ProductController as  AdminProductController;
+use App\Http\Controllers\Api\V1\Admin\Product\ProductController as AdminProductController;
 use App\Http\Controllers\Api\V1\User\UserController;
+
 use App\Http\Controllers\Api\Adresses\UserLocationController;
 use App\Http\Controllers\Home\HomePageController;
 use Illuminate\Http\Request;
@@ -24,7 +24,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
     // 🔹 User Profile Routes
-    Route::get('/user/me', [UserController::class, 'me']);   // Get logged-in user
+    Route::get('user/me', [UserController::class, 'me']);   // Get logged-in user
     Route::post('/user/update', [UserController::class, 'updateProfile']); // Update profile
     Route::put('/user/update', [UserController::class, 'updateProfile']); // Update profile
     Route::post('/user/addresses', [UserLocationController::class, 'store']);
@@ -56,6 +56,7 @@ Route::controller(CategoryController::class)->prefix('category')->group(function
 
 //----------------- Product admin --------------- //
 
+
 Route::controller(AdminProductController::class)->prefix('products')->group(function () {
     Route::get('index', 'index');
     Route::get('show/{id}', 'show');
@@ -63,6 +64,7 @@ Route::controller(AdminProductController::class)->prefix('products')->group(func
     Route::put('update/{id}', 'update');
     Route::delete('destroy/{id}', 'destroy');
 });
+
 
 // ---------------- Home  ------------------ //
 
