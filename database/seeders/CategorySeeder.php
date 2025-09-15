@@ -50,4 +50,6 @@ class CategorySeeder extends Seeder
             }
         }
     }
+
+
 }

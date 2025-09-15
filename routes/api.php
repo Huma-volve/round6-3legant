@@ -1,5 +1,9 @@
 <?php
 
+
+use App\Http\Controllers\Api\V1\Admin\Category\CategoryController;
+use App\Http\Controllers\Api\V1\Admin\Product\ProductController as  AdminProductController;
+use App\Http\Controllers\Api\V1\User\UserController;
 use App\Http\Controllers\Api\V1\Admin\Category\CategoryController;
 use App\Http\Controllers\Api\V1\Admin\Product\ProductController as AdminProductController;
 use App\Http\Controllers\Api\V1\User\UserController;
@@ -25,6 +29,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
     // 🔹 User Profile Routes
+
     Route::get('user/me', [UserController::class, 'me']);   // Get logged-in user
     Route::post('/user/update', [UserController::class, 'updateProfile']); // Update profile
     Route::put('/user/update', [UserController::class, 'updateProfile']); // Update profile
@@ -44,6 +49,7 @@ Route::controller(UserProductController::class)->prefix('products')->group(funct
     Route::get('/', 'index');
     Route::get('search', 'searchProducts');
 });
+
 
 // ------- Category admin --------------- //
 
@@ -65,6 +71,7 @@ Route::controller(AdminProductController::class)->prefix('products')->group(func
     Route::put('update/{id}', 'update');
     Route::delete('destroy/{id}', 'destroy');
 });
+
 
 //----------------- User admin --------------- //
 Route::prefix('admin/users')->controller(AdminUserController::class)->group(function () {

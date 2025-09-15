@@ -7,7 +7,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasName;
+use Filament\Panel;
+class User extends Authenticatable implements FilamentUser, HasName
 {
     use HasFactory, Notifiable,HasApiTokens;
 
@@ -49,6 +52,35 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+
+public function canAccessPanel(Panel $panel): bool
+    {
+    
+        return $this->role === 'admin';
+    }
+public function getFilamentName(): string
+{
+    if ($this->fname && $this->lname) {
+        return $this->fname . ' ' . $this->lname;
+    }
+
+    if ($this->username) {
+        return $this->username;
+    }
+
+    if ($this->email) {
+        return $this->email;
+    }
+
+    return 'User #' . $this->id; 
+}
+public function getFullNameAttribute(): string
+{
+    return "{$this->fname} {$this->lname}";
+}
+
+
 
     /*
     |--------------------------------------------------------------------------
