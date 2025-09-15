@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1\Wishlist;
+namespace App\Http\Controllers\Api\V1\User\Wishlist;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
