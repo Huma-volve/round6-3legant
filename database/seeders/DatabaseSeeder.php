@@ -22,10 +22,19 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             ProductSeeder::class,
             UserSeeder::class,
+
           UsersTableSeeder::class,
 
         ]);
 
+
+
+
+
+        User::factory()->create([
+            'fname' => 'Test User',
+            'email' => 'test@example.com',
+        ]);
 
 
     }

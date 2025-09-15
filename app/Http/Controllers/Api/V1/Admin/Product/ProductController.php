@@ -11,13 +11,14 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::with('category')->get();
+        $products = Product::with('subcategory')->get();
         return response()->json($products, 200);
     }
 
     public function show($id)
     {
-        $product = Product::with('category')->findOrFail($id);
+
+        $product = Product::with('subcategory')->findOrFail($id);
         return response()->json($product, 200);
     }
 
