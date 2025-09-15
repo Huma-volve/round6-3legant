@@ -3,9 +3,6 @@
 use App\Http\Controllers\Api\V1\Admin\Category\CategoryController;
 use App\Http\Controllers\Api\V1\Admin\Product\ProductController as  AdminProductController;
 use App\Http\Controllers\Api\V1\User\UserController;
-use App\Http\Controllers\Api\V1\Admin\Category\CategoryController;
-use App\Http\Controllers\Api\V1\Admin\Product\ProductController as AdminProductController;
-use App\Http\Controllers\Api\V1\User\UserController;
 use App\Http\Controllers\Api\V1\Admin\User\UserController as AdminUserController;
 
 use App\Http\Controllers\Api\Adresses\UserLocationController;
@@ -16,14 +13,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ArticleController;
 
-use App\Http\Controllers\Home\HomePageController;
-use App\Http\Controllers\Api\V1\User\UserController;
-use App\Http\Controllers\Api\Adresses\UserLocationController;
 use App\Http\Controllers\Api\V1\User\Wishlist\WishlistController;
-use App\Http\Controllers\Api\V1\Admin\Category\CategoryController;
-use App\Http\Controllers\Api\V1\Admin\User\UserController as AdminUserController;
 use App\Http\Controllers\Api\V1\User\products\ProductController as UserProductController;
-use App\Http\Controllers\Api\V1\Admin\Product\ProductController as AdminProductController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
