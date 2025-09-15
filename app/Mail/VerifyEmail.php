@@ -18,11 +18,8 @@ class VerifyEmail extends Mailable
      */
             public $code;
 
-    public function __construct($code)
-    {
-        //
-                 $this->code = $code;
-
+    public function __construct($code){
+         $this->code = $code;
     }
 
     /**
@@ -44,6 +41,13 @@ class VerifyEmail extends Mailable
 
     }
 
+
+    //   public function build()
+    // {
+    //            return $this->subject('Verify Your Email')
+    //                 ->view('emails.verify');
+
+    // }
     /**
      * Get the message content definition.
      */

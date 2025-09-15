@@ -51,6 +51,7 @@ class ProductController extends Controller
 
         $products = $query->paginate(12);
 
+
         if ($products->isEmpty()) {
             return $this->errorResponse('No products found.', 404);
         }
@@ -69,6 +70,7 @@ class ProductController extends Controller
         $products = Product::where('name', 'LIKE', "%{$searchTerm}%")
             ->orWhere('description', 'LIKE', "%{$searchTerm}%")
             ->paginate(12);
+
             
         if ($products->isEmpty()) {
             return $this->errorResponse('No products found matching your search criteria.');

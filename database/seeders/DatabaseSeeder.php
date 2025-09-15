@@ -34,7 +34,13 @@ class DatabaseSeeder extends Seeder
             ArticleSeeder::class,
             OrderSeeder::class,
             ReviewSeeder::class,
+            UsersTableSeeder::class,
+
         ]);
+
+
+
+
 
         User::factory()->create([
             'fname' => 'Test User',

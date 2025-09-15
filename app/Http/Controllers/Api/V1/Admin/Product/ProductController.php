@@ -17,6 +17,7 @@ class ProductController extends Controller
 
     public function show($id)
     {
+
         $product = Product::with('subcategory')->findOrFail($id);
         return response()->json($product, 200);
     }
