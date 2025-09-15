@@ -28,6 +28,7 @@ class CategorySeeder extends Seeder
                 'slug'        => Str::slug($main),
                 'description' => "Shop for $main furniture",
                 'parent_id'   => null,
+                'is_featured' => true,
             ]);
 
             // Example child categories
