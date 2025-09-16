@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Adresses;
+namespace App\Http\Controllers\Api\V1\User\Addresses;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateUserLocationRequest;

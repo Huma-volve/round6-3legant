@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
             ArticleSeeder::class,
             OrderSeeder::class,
             ReviewSeeder::class,
-            UsersTableSeeder::class,
+            // UsersTableSeeder::class,
 
         ]);
 
