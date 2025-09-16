@@ -13,6 +13,20 @@ class WishlistController extends Controller
     public function index (Request $request)
     {
         $user = $request->user();
+        if (!$user) {
+            return response()->json([
+                'status'  => false,
+                'message' => 'Unauthenticated.',
+            ], 401);
+        }
+
+    // Early empty check (no pagination returned if nothing exists)
+    if ((clone $user->wishlist())->doesntExist()) {
+        return response()->json([
+            'status'  => true,
+            'message' => 'Wishlist is empty',
+        ], 200);
+    }
 
         $wishlistProducts = $user->wishlist()->with('product.subcategory', 'product.reviews')->paginate(10);
 
