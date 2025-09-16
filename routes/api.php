@@ -5,14 +5,14 @@ use App\Http\Controllers\Api\V1\Admin\Product\ProductController as  AdminProduct
 use App\Http\Controllers\Api\V1\User\UserController;
 use App\Http\Controllers\Api\V1\Admin\User\UserController as AdminUserController;
 
-use App\Http\Controllers\Api\Adresses\UserLocationController;
+use App\Http\Controllers\Api\V1\User\orderHistory\OrderHistoryController;
 use App\Http\Controllers\Home\HomePageController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ArticleController;
-
+use App\Http\Controllers\Api\V1\User\Addresses\UserLocationController;
 use App\Http\Controllers\Api\V1\User\Wishlist\WishlistController;
 use App\Http\Controllers\Api\V1\User\products\ProductController as UserProductController;
 
@@ -27,16 +27,23 @@ Route::post('/verifyOTP', [AuthController::class, 'verifyOTP']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
-    // 🔹 User Profile Routes
+    // User Profile Routes
 
     Route::get('user/me', [UserController::class, 'me']);   // Get logged-in user
-    Route::post('/user/update', [UserController::class, 'updateProfile']); // Update profile
-    Route::put('/user/update', [UserController::class, 'updateProfile']); // Update profile
-    Route::post('/user/addresses', [UserLocationController::class, 'store']);
+    
+    // update profile routes
+    Route::match(['post','put'], 'user/update', [UserController::class, 'updateProfile'])->name('editProfile');
+
+    // addresses routes
     Route::apiResource('user/addresses', UserLocationController::class);
-    Route::get('/user/wishlist', [WishlistController::class, 'index']);
-    Route::post('/user/wishlist/{productId}', [WishlistController::class, 'addProductToWishlist']);
-    Route::delete('/user/wishlist/{productId}', [WishlistController::class, 'removeProductFromWishlist']);
+
+    // wishlist routes
+    Route::controller(WishlistController::class)->prefix('wishlist')->group(function () {
+        Route::get('/','index')->name('wishlist');
+        Route::post('/{productId}','addProductToWishlist')->whereNumber('productId')->name('addProduct');
+        Route::delete('/{productId}','removeProductFromWishlist')->whereNumber('productId')->name('removeProduct');
+});
+    Route::get('/user/ordersHistory', [OrderHistoryController::class, 'index'])->name('orderHistory');
 
 });
 
