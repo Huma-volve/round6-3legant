@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Traits\ApiResponseTrait;
+
 class ProductController extends Controller
 {
     use ApiResponseTrait;
@@ -53,27 +54,27 @@ class ProductController extends Controller
 
 
         if ($products->isEmpty()) {
-            return $this->errorResponse('No products found.', 404);
+            return $this->errorResponse('No products found.', 200);
         }
 
 
         return $this->successResponse($products, 'Product list');
     }
+    
     public function searchProducts(Request $request)
     {
         $request->validate([
-            'search' => 'required|string|min:3',
+            'search' => 'required|string|min:1',
         ]);
 
         $searchTerm = $request->input('search');
 
-        $products = Product::where('name', 'LIKE', "%{$searchTerm}%")
-            ->orWhere('description', 'LIKE', "%{$searchTerm}%")
-            ->paginate(12);
 
-            
+        // Scout Search (TNTSearch)
+        $products = Product::search($searchTerm)->paginate(12);
+
         if ($products->isEmpty()) {
-            return $this->errorResponse('No products found matching your search criteria.');
+            return $this->errorResponse('No products found matching your search criteria.', 200);
         }
 
         return $this->successResponse($products, 'Search results');
