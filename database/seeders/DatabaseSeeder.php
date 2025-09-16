@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
             'fname' => 'John',
             'lname' => 'Doe',
             'username' => 'johndoe',
-            'email' => 'test@example.com',
+            'email' => 'johndoe@example.com',
         ]);
 
 
