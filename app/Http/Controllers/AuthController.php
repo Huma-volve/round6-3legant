@@ -8,15 +8,19 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\VerifyEmail;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\DB;
 use App\Mail\PasswordResetCode;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Str;
+use App\Traits\ApiResponseTrait;
 
 class AuthController extends Controller
 {
     //
-    public function register(Request $request)
+        use ApiResponseTrait;
+
+    public function register(RegisterRequest  $request)
     {
 
 
@@ -31,27 +35,21 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'role' => 'user',
             'is_verified' => false,
-            // 'verification_code' => $verificationCode,
             'name' => $request['name'],
-            // 'email' => $request['email'],
-            // 'password' => Hash::make($request->password),
-            // 'is_verified' => false,
-            'verification_code' => Str::uuid(),
+            // 'verification_code' => Str::uuid(),
+           'verification_code' => '111111',
+
 
         ]);
         $token = $user->createToken('auth_token')->plainTextToken;
 
 
-        // Mail::to($user->email)->send(new VerifyEmail($verificationCode));
         Mail::to($user->email)->send(new VerifyEmail($user->verification_code));
 
-        return response()->json([
-            'message' => 'User registered. Verification code sent to email.',
-            'user' => $user,
-            'token' => $token,
-            'varification_code' => $verificationCode,
-
-        ], 201);
+          return $this->successResponse([
+        'user' => $user,
+        'token' => $token,
+    ], 'User registered. Verification code sent to email.', 201);
     }
 
    
@@ -80,11 +78,11 @@ class AuthController extends Controller
         $user->email_verified_at = now();
         $user->save();
 
-        return response()->json([
-            'message' => 'Email verified successfully.',
-        ]);
+                return $this->successResponse(null, 'Email verified successfully');
+
+      
     }
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
 
         $user = User::where('email', $request->email)->first();
@@ -99,11 +97,11 @@ class AuthController extends Controller
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        return response()->json([
-            'message' => 'Login successful',
-            'user' => $user,
-            'token' => $token
-        ]);
+         return $this->successResponse(
+            ['user' => $user, 'token' => $token],
+            'Login successful'
+        );
+     
     }
 
 
@@ -131,7 +129,7 @@ class AuthController extends Controller
         );
         Mail::to($request->email)->send(new PasswordResetCode($code));
 
-        return response()->json(['message'=>'Reset Code Sent to your Email kindly check']);
+        return $this->successResponse(null, 'Reset Code Sent to your Email kindly check');
 
     }
 
@@ -158,12 +156,14 @@ class AuthController extends Controller
 
         DB::table('password_reset_tokens')->where('email', $request->email)->delete();
 
-        return response()->json(['message' => 'Password reset successfully']);
+                return $this->successResponse(null, 'Password reset successfully');
+
     }
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
 
-        return response()->json(['message' => 'Logout successful']);
+                return $this->successResponse(null, 'Logout successful');
+
     }
 }
