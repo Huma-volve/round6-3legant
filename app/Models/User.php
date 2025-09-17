@@ -28,6 +28,7 @@ class User extends Authenticatable implements FilamentUser, HasName
         'role',
         'verification_code',
         'is_verified',
+        'email_verified_at', 
     ];
 
     /**
@@ -47,6 +48,7 @@ class User extends Authenticatable implements FilamentUser, HasName
     {
         return [
             'email_verified_at' => 'datetime',
+            'is_verified' => 'boolean',
             'password' => 'hashed',
         ];
     }
