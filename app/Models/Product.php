@@ -4,12 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Laravel\Scout\Searchable;
+// use Laravel\Scout\Searchable;
 
 class Product extends Model
 {
     use HasFactory;
-    use Searchable;
+    // use Searchable;
 
     protected $fillable = ['name', 'description', 'price', 'stock', 'add_info', 'subcategory_id'];
 

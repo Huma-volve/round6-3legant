@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Api\V1\Admin\Category\CategoryController;
 use App\Http\Controllers\Api\V1\Admin\Product\ProductController as  AdminProductController;
+use App\Http\Controllers\Api\V1\User\Cart\CartController;
+use App\Http\Controllers\Api\V1\User\Order\OrderController;
 use App\Http\Controllers\Api\V1\User\UserController;
 use App\Http\Controllers\Api\V1\Admin\User\UserController as AdminUserController;
 
@@ -103,3 +105,28 @@ Route::controller(ArticleController::class)->prefix('articles')->group(function 
     Route::get('index', 'index');
     Route::get('show/{slug}', 'show');
 });
+
+
+// ---------------- cart --------------//
+
+
+Route::controller(CartController::class)->prefix('cart')->group(function () {
+        Route::get('/', 'index');              
+        Route::post('/', 'store');             
+        Route::put('/{item}', 'update');       
+        Route::patch('/{item}/increment', 'increment'); 
+        Route::patch('/{item}/decrement', 'decrement'); 
+        Route::delete('/{item}', 'destroy');   
+        Route::delete('/', 'clear');          
+    });
+
+//---------------- order ----------------//
+
+
+Route::prefix('orders')->controller(OrderController::class)->group(function () {
+    Route::get('/', 'index');
+    Route::post('/', 'store');
+    Route::get('/{id}', 'show');
+    Route::post('/{id}/cancel', 'cancel');
+});
+
