@@ -8,7 +8,7 @@ use App\Models\User;
 class Order extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id', 'total_price', 'status', 'payment_status', 'address_id', 'coupon_id'];
+    protected $fillable = ['user_id','cart_id', 'total_price', 'status', 'payment_status', 'address_id', 'coupon_id'];
 
     public function coupon()
     {
@@ -22,6 +22,10 @@ class Order extends Model
 public function orderItems()
 {
     return $this->hasMany(OrderItem::class);
+}
+public function cart()
+{
+    return $this->belongsTo(Cart::class);
 }
 
 }
